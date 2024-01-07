@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright Weather App</title>
+    <link rel="stylesheet" href="weather.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+       
+           body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(120deg, #ffcc80, #ff8a65);
+            color: #333;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 1 1 20px rgba(0.1, 0.02, 0, 0.2);
+            animation: fadeIn 1s ease-out;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff8a65, #ffcc80);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff6f00;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .input-box {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 1em;
+            outline: none;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .input-box:hover, .input-box:focus {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        #searchBtn {
+            background-color: #ff6f00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #searchBtn:hover {
+            background-color: #ff8a65;
+        }
+
+        .location-not-found {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(45deg, #e57373, #f48fb1);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .weather-img {
+            width: 80px;
+            margin-bottom: 10px;
+            animation: rotate 3s linear infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .weather-img:hover {
+            transform: scale(1.1);
+        }
+
+        .weather-box {
+            text-align: center;
+        }
+
+        .temperature {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .description {
+            margin-top: 5px;
+            font-size: 1.2em;
+        }
+
+        .weather-details {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .humidity, .wind {
+            display: flex;
+            align-items: center;
+        }
+
+        .text {
+            margin-left: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    
+    </style>
+</head>
+<body>
+   
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" placeholder="Enter your location" class="input-box" id="locationInput" list="indianCities">
+                <datalist id="indianCities">
+                    <option value="Delhi">
+                    <option value="Mumbai">
+                    <option value="Bangalore">
+                    <option value="Chennai">
+                    <option value="Kolkata">
+                    <!-- Add more cities as needed -->
+                </datalist>
+                <button class="fas fa-search" id="searchBtn"></button>
+
+            </div>
+        </div>
+
+        <div class="location-not-found" id="locationNotFound">
+            <h1>Sorry, Location not found!!!</h1>
+            <img src="/assets/404.png" alt="404 Error">
+        </div>
+
+        <div class="weather-body" id="weatherBody">
+            <img src="C:\Users\19l31\OneDrive\Desktop\INFOTRIX\realistic-sun-icon-weather-design-260nw-1384281425.jpg" alt="Weather Image" class="weather-img" id="weatherImg">
+
+            <div class="weather-box">
+                <p class="temperature" id="temperature">0 <sup>°C</sup></p>
+                <p class="description" id="weatherDescription">light rain</p>
+            </div>
+
+            <div class="weather-details">
+                <div class="humidity">
+                    <i class="fa-sharp fa-solid fa-droplet"></i>
+                    <div class="text">
+                        <span id="humidity">45%</span>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+
+                <div class="wind">
+                    <i class="fa-solid fa-wind"></i>
+                    <div class="text">
+                        <span id="windSpeed">12Km/H</span>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const locationInput = document.getElementById('locationInput').value;
+
+            
+            const apiKey = "13ae2cad1a0c01ecf06eb32d4e22c2f9";
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${locationInput}&appid=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const locationNotFound = document.getElementById('locationNotFound');
+                    const weatherBody = document.getElementById('weatherBody');
+
+                    if (data.cod === '404') {
+                        locationNotFound.style.display = 'block';
+                        weatherBody.style.display = 'none';
+                    } else {
+                        locationNotFound.style.display = 'none';
+                        weatherBody.style.display = 'block';
+
+                        document.getElementById('temperature').innerHTML = `${data.main.temp} <sup>°C</sup>`;
+                        document.getElementById('weatherDescription').innerHTML = data.weather[0].description;
+                        document.getElementById('humidity').innerHTML = `${data.main.humidity}%`;
+                        document.getElementById('windSpeed').innerHTML = `${data.wind.speed} Km/H`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    alert('Error fetching weather data. Please try again.');
+                });
+        });
+    </script>
+</body>
+</html>
